@@ -58,8 +58,35 @@ def forward_selection(n: int):
             print("Warning: Accuracy has decreased, still continuing search\n")
     print(f"Finished search!!! The best feature set is {best_node.state} with an accuracy of {round(best_node.accuracy * 100, 2)}%")
 
-def backward_elimination():
-    pass
+def backward_elimination(n):
+    startstate = {i for i in range(1, n + 1)}
+    root = Node(state = startstate, parent = None, accuracy = 0)
+    root.evaluate()
+    best_node = root
+    currnode = root
+    
+
+    print(f"Using all features and feature set {root.state} and \"random\" evaluation, I get an accuracy of {round(root.accuracy * 100, 2)}%\n")
+    print("Beginning search\n")
+    while currnode.state != set({}):
+        worst_feature = (None, 100)
+        for i in currnode.state:
+            accuracy = random.uniform(0, 1)
+            if worst_feature[1] >= accuracy:
+                worst_feature = (i, accuracy)
+
+        new_state = set(currnode.state)
+        new_state.remove(worst_feature[0])
+
+        newnode = Node(state = new_state, parent = currnode, accuracy = 0)
+        newnode.evaluate()
+        currnode = newnode
+        print(f"Feature set {currnode.state if currnode.state != set({}) else {}} was best, accuracy is {round(currnode.accuracy * 100, 2)}%\n")
+        if currnode.accuracy > best_node.accuracy:
+            best_node = currnode
+        else:
+            print("Warning: Accuracy has decreased, still continuing search\n")
+    print(f"Finished search!!! The best feature set is {best_node.state} with an accuracy of {round(best_node.accuracy * 100, 2)}%")
 
 def best_n_features():
     pass

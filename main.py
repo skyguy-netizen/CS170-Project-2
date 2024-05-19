@@ -30,8 +30,6 @@ def expand_node(node, total_features):
             children.append(child_node)
     return children
 
-
-
 def forward_selection(n: int):
     root = Node(state = {}, parent = None, accuracy = 0)
     root.evaluate()
@@ -46,10 +44,8 @@ def forward_selection(n: int):
         curr_best_node = children[0]
         for child in children:
             print(f"\tUsing feature(s) {child.state} accuracy is {round(child.accuracy * 100, 2)}%")
-
             if child.accuracy > curr_best_node.accuracy:
                 curr_best_node = child
-
         currnode = curr_best_node
         print(f"\nFeature set {currnode.state} was best, accuracy is {round(currnode.accuracy * 100, 2)}%\n")
         if currnode.accuracy > best_node.accuracy:
@@ -64,8 +60,6 @@ def backward_elimination(n):
     root.evaluate()
     best_node = root
     currnode = root
-    
-
     print(f"Using all features and feature set {root.state} and \"random\" evaluation, I get an accuracy of {round(root.accuracy * 100, 2)}%\n")
     print("Beginning search\n")
     while currnode.state != set({}):
@@ -74,10 +68,8 @@ def backward_elimination(n):
             accuracy = random.uniform(0, 1)
             if worst_feature[1] >= accuracy:
                 worst_feature = (i, accuracy)
-
         new_state = set(currnode.state)
         new_state.remove(worst_feature[0])
-
         newnode = Node(state = new_state, parent = currnode, accuracy = 0)
         newnode.evaluate()
         currnode = newnode
@@ -104,17 +96,11 @@ def main():
     print("3. k-Best Features")
 
     option = int(input())
-
-    # trace = input("Would you like to see a trace of the algorithm (yes or no): ")
-    # trace = (trace != "no")    
-    #With the given number of features labeled 1....n, apply forward selection...use random function as evaluator
     
     if option == 1:    
         best = forward_selection(num_ftrs)
-        # best.printstate()
     elif option == 2:
         best = backward_elimination(num_ftrs)
-        # best.printstate()
     else:
         print("Method not implemented yet!")
 

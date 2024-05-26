@@ -1,14 +1,14 @@
 import numpy as np
-from classifier import NN
+from classifier import NN 
 class validator:
     
-    def __init__(self,classifier,dataset):
+    def __init__(self,classifier,data):
         self.classifier = classifier
-        self.dataset = dataset
+        self.data = data
 
     def leave_one_out(self,feature_subset):
         prediction = 0
-        total_instances = len(self.dataset)
+        total_instances = len(self.data)
 
         for i in range(total_instances):
             training_data = np.delete(self.data,i,axis=0)

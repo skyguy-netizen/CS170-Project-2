@@ -30,6 +30,18 @@ def expand_node(node, total_features):
             children.append(child_node)
     return children
 
+def expand_node_be(node, total_features):
+    children = []
+    current_features = set(node.state)
+    for feature in range(1, total_features + 1):
+        if feature in current_features:
+            new_state = set(node.state)
+            new_state.remove(feature)
+            child_node = Node(state = new_state, parent = node, accuracy = 0)
+            child_node.evaluate()
+            children.append(child_node)
+    return children
+
 def forward_selection(n: int):
     root = Node(state = {}, parent = None, accuracy = 0)
     root.evaluate()
@@ -63,17 +75,14 @@ def backward_elimination(n):
     print(f"Using all features and feature set {root.state} and \"random\" evaluation, I get an accuracy of {round(root.accuracy * 100, 2)}%\n")
     print("Beginning search\n")
     while currnode.state != set({}):
-        worst_feature = (None, 100)
-        for i in currnode.state:
-            accuracy = random.uniform(0, 1)
-            if worst_feature[1] >= accuracy:
-                worst_feature = (i, accuracy)
-        new_state = set(currnode.state)
-        new_state.remove(worst_feature[0])
-        newnode = Node(state = new_state, parent = currnode, accuracy = 0)
-        newnode.evaluate()
-        currnode = newnode
-        print(f"Feature set {currnode.state if currnode.state != set({}) else {}} was best, accuracy is {round(currnode.accuracy * 100, 2)}%\n")
+        children = expand_node_be(currnode, n)
+        curr_best_node = children[0]
+        for child in children:
+            print(f"\tUsing feature(s) {child.state} accuracy is {round(child.accuracy * 100, 2)}%")
+            if child.accuracy > curr_best_node.accuracy:
+                curr_best_node = child
+        currnode = curr_best_node
+        print(f"\nFeature set {currnode.state} was best, accuracy is {round(currnode.accuracy * 100, 2)}%\n")
         if currnode.accuracy > best_node.accuracy:
             best_node = currnode
         else:

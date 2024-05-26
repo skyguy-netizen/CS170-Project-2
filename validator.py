@@ -1,5 +1,5 @@
 import numpy as np
-from classifier import classifier
+from classifier import NN
 class validator:
     
     def __init__(self,classifier,dataset):
@@ -8,7 +8,7 @@ class validator:
 
     def leave_one_out(self,feature_subset):
         prediction = 0
-        total_instances = len(self.data)
+        total_instances = len(self.dataset)
 
         for i in range(total_instances):
             training_data = np.delete(self.data,i,axis=0)

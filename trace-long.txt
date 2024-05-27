@@ -1,0 +1,11 @@
+Welcome to our groups Feature Selection plus Nearest Neighbor model.
+Please enter name of file: large-test-dataset.txt
+Would you like to use a feature selection algorithm or use your subset of features? (yes or no): no
+Please enter feature numbers seperated by space: 1 15 27
+Reading dataset
+Finished reading dataset; time taken is 0.022527456283569336 seconds 
+
+Running leave one out validation with features
+Finished evaluating model; time taken is 20.508270263671875 seconds 
+
+Accuracy with feature set {1, 27, 15} is 95.0%

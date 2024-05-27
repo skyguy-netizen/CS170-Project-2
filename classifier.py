@@ -1,50 +1,38 @@
 import numpy as np
-import sys
+import pandas as pd
 
 class NN:
+    def __init__(self, raw_data):
+        self.raw_data = raw_data
+
+    def train(self):
+        (self.data, self.mean, self.std) = self.normalize(self.raw_data.drop(columns = 'class'))
+        self.data['class'] = self.raw_data['class']
+        
+    
+    def normalize(self, data):
+        data_mean = data.mean(axis = 0)
+        data_std = data.std(axis = 0)     
+
+        norm_data = (data - data_mean) / data_std
+        return (norm_data, data_mean, data_std)
+
+    # Returns class of closest point
+    def test(self, point):
+        # Normalize point
+        norm_point = (point - self.mean) / self.std
+        min_class = None
+        min_distance = float('inf')
+        for _, row in self.data.iterrows():
+            d = self.distance(norm_point, row.drop(columns = 'class'))
+            if(d < min_distance):
+                min_distance = d
+                min_class = row['class']
+        return min_class
 
     # Euclidean distance
     def distance(self, p1, p2):
         distance = 0
-
-        for i in range(0, len(p1)):
-            distance = distance + (p1[i]-p2[i+1])**2
-        
-        distance = distance**0.5
+        for i in range(len(p1)):
+            distance = distance + (p1.iloc[i]-p2.iloc[i])**2
         return distance
-
-    def __init__(self, features, filename):
-        file = open(filename, "r")
-        datapoints = file.readlines()
-        self.data = np.empty((0,len(features)+1))
-        features.insert(0, 0)
-
-        # Add certain features of datapoints
-        for point in datapoints:
-            temp = np.array(point.split()).astype(float)
-            temp = temp[features]
-            self.data = np.append(self.data, [temp],axis=0)
-
-        file.close()
-
-        # Normalize data
-        temp = self.data[:, 1:self.data.shape[1]]
-        temp = (temp-np.mean(temp))/np.std(temp)
-        self.data[:, 1:self.data.shape[1]] = temp
-    
-    # Returns class of closest point
-    def test(self, point):
-        
-        # Normalize point
-        point = np.array(point)
-        point = (point-np.mean(point))/np.std(point)
-
-        min_class = 0
-        min_distance = sys.float_info.max
-        for data_point in self.data:
-            d = self.distance(point, data_point)
-            if(d < min_distance):
-                min_distance = d
-                min_class = data_point[0]
-        
-        return min_class

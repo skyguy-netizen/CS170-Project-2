@@ -1,50 +1,32 @@
 import numpy as np
-import sys
+import pandas as pd
 
 class NN:
+    def __init__(self, raw_data):
+        self.raw_data = raw_data
 
-    # Euclidean distance
-    def distance(self, p1, p2):
-        distance = 0
-
-        for i in range(0, len(p1)):
-            distance = distance + (p1[i]-p2[i+1])**2
+    def train(self):
+        (self.data, self.mean, self.std) = self.normalize(self.raw_data.drop(columns = 'class'))
+        self.data['class'] = self.raw_data['class']
         
-        distance = distance**0.5
-        return distance
-
-    def __init__(self, features, filename):
-        file = open(filename, "r")
-        datapoints = file.readlines()
-        self.data = np.empty((0,len(features)+1))
-        features.insert(0, 0)
-
-        # Add certain features of datapoints
-        for point in datapoints:
-            temp = np.array(point.split()).astype(float)
-            temp = temp[features]
-            self.data = np.append(self.data, [temp],axis=0)
-
-        file.close()
-
-        # Normalize data
-        temp = self.data[:, 1:self.data.shape[1]]
-        temp = (temp-np.mean(temp))/np.std(temp)
-        self.data[:, 1:self.data.shape[1]] = temp
     
+    def normalize(self, data):
+        data_mean = data.mean(axis = 0)
+        data_std = data.std(axis = 0)     
+
+        norm_data = (data - data_mean) / data_std
+        return (norm_data, data_mean, data_std)
+
     # Returns class of closest point
     def test(self, point):
-        
         # Normalize point
-        point = np.array(point)
-        point = (point-np.mean(point))/np.std(point)
+        norm_point = (point - self.mean) / self.std
+        min_class = None
+        min_distance = float('inf')
+        distances = np.argmin(self.distances(norm_point))
+        class_label = self.data.iloc[distances]['class']
+        return class_label
 
-        min_class = 0
-        min_distance = sys.float_info.max
-        for data_point in self.data:
-            d = self.distance(point, data_point)
-            if(d < min_distance):
-                min_distance = d
-                min_class = data_point[0]
-        
-        return min_class
+    # Euclidean distance
+    def distances(self, point):
+        return np.sum((self.data.drop(columns = 'class') - point) ** 2, axis = 1)

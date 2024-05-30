@@ -1,23 +1,21 @@
 import numpy as np
 from classifier import NN 
-class validator:
-    
-    def __init__(self,classifier,data):
-        self.classifier = classifier
+
+class Validator:
+    def __init__(self, data):
         self.data = data
 
-    def leave_one_out(self,feature_subset):
+    def leave_one_out(self):
         prediction = 0
         total_instances = len(self.data)
 
         for i in range(total_instances):
-            training_data = np.delete(self.data,i,axis=0)
-            test_instance = self.data[i]
-            train_classifier = NN(features=feature_subset,filename=None)
-            train_classifier.data = training_data
-
-            predicted_class = train_classifier.test(test_instance[1:])
-            actual_class = test_instance[0]
+            training_data = self.data.drop(i)
+            test_instance = self.data.iloc[i]
+            classifier = NN(training_data)
+            classifier.train()
+            predicted_class = classifier.test(test_instance.drop('class'))
+            actual_class = test_instance['class']
 
             if predicted_class == actual_class:
                 prediction +=1

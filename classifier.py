@@ -23,16 +23,10 @@ class NN:
         norm_point = (point - self.mean) / self.std
         min_class = None
         min_distance = float('inf')
-        for _, row in self.data.iterrows():
-            d = self.distance(norm_point, row.drop(columns = 'class'))
-            if(d < min_distance):
-                min_distance = d
-                min_class = row['class']
-        return min_class
+        distances = np.argmin(self.distances(norm_point))
+        class_label = self.data.iloc[distances]['class']
+        return class_label
 
     # Euclidean distance
-    def distance(self, p1, p2):
-        distance = 0
-        for i in range(len(p1)):
-            distance = distance + (p1.iloc[i]-p2.iloc[i])**2
-        return distance
+    def distances(self, point):
+        return np.sum((self.data.drop(columns = 'class') - point) ** 2, axis = 1)

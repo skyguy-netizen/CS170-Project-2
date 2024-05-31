@@ -4,7 +4,7 @@ import copy
 from collections import defaultdict
 import numpy as np
 import pandas as pd
-
+import validator
 
 class Node:
     def __init__(self, state: set, parent, accuracy):
@@ -16,8 +16,8 @@ class Node:
         print(self.state)
 
     def evaluate(self, data):
-        evalu = Validator(data[list(self.state) + 'class'])
-        accuracy = evalu.leave_one_out()
+        evalu = validator(data[list(self.state) + 'class'])
+        self.accuracy = evalu.leave_one_out()
 
 def expand_node(node, total_features):
     children = []

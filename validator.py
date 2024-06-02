@@ -14,7 +14,7 @@ class Validator:
             test_instance = self.data.iloc[i]
             classifier = KNN(training_data)
             classifier.train()
-            predicted_class = classifier.test(test_instance.drop('class'), k = 5)
+            predicted_class = classifier.test(test_instance.drop('class'))
             actual_class = test_instance['class']
 
             if predicted_class == actual_class:

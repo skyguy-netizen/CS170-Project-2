@@ -95,6 +95,30 @@ class FeatureSearch:
             else:
                 print("Warning: Accuracy has decreased, still continuing search\n")
         print(f"Finished search!!! The best feature set is {best_node.state} with an accuracy of {round(best_node.accuracy * 100, 2)}%")
+    
+    def random_feature_selection(self, num_iterations=100, num_features_to_select=None):
+        if num_features_to_select is None:
+            num_features_to_select = self.total_features // 2  # Default to half of the total features
+
+        best_node = None
+
+        print("Beginning random feature selection search\n")
+        for i in range(num_iterations):
+            # Randomly select a subset of features
+            selected_features = np.random.choice(range(1, self.total_features + 1), num_features_to_select, replace=False)
+            selected_features_set = set(selected_features)
+
+            # Create a node with the selected features
+            node = Node(state=selected_features_set, parent=None, accuracy=0)
+            node.evaluate(self.data, self.k)
+
+            print(f"Iteration {i + 1}: Using feature(s) {node.state}, accuracy is {round(node.accuracy * 100, 2)}%")
+
+            # Update the best node if necessary
+            if best_node is None or node.accuracy > best_node.accuracy:
+                best_node = node
+
+        print(f"\nFinished search!!! The best feature set is {best_node.state} with an accuracy of {round(best_node.accuracy * 100, 2)}%")
 
 def read_file(filename):
     try:

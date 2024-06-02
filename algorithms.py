@@ -15,14 +15,15 @@ class Node:
     def printstate(self):
         print(self.state)
 
-    def evaluate(self, data):
-        evalu = Validator(data[list(self.state) + ['class']])
+    def evaluate(self, data, k = 1):
+        evalu = Validator(data[list(self.state) + ['class']], k)
         self.accuracy = evalu.leave_one_out()
 
 class FeatureSearch:
-    def __init__(self, data):
+    def __init__(self, data, k = 1):
         self.data = data
         self.total_features = len(self.data.columns) - 1
+        self.k = k
 
     def expand_node_fs(self, node):
         children = []
@@ -32,7 +33,7 @@ class FeatureSearch:
                 new_state = set(node.state)
                 new_state.add(feature)
                 child_node = Node(state = new_state, parent = node, accuracy = 0)
-                child_node.evaluate(self.data)
+                child_node.evaluate(self.data, self.k)
                 children.append(child_node)
         return children
 
@@ -44,7 +45,7 @@ class FeatureSearch:
                 new_state = set(node.state)
                 new_state.remove(feature)
                 child_node = Node(state = new_state, parent = node, accuracy = 0)
-                child_node.evaluate(self.data)
+                child_node.evaluate(self.data, self.k)
                 children.append(child_node)
         return children
 

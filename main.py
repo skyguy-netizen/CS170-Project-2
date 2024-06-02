@@ -11,6 +11,9 @@ def main():
     option = input("Would you like to use a feature selection algorithm or use your subset of features? (yes or no): ")
     print(option)
 
+    k = int(input("Enter value for k (nearest-neighbors): "))
+    print(k)
+
     if option == "yes":
         print("Type the number of the feature selection algorithm you want to run:")
         print("1. Forward Selection")
@@ -18,7 +21,7 @@ def main():
         print("3. k-Best Features")
         choice = int(input())
         data = read_file(filename)
-        search_object = FeatureSearch(data)
+        search_object = FeatureSearch(data, k)
         if choice == 1:
             print("Running forward selection here")
             best = search_object.forward_selection()

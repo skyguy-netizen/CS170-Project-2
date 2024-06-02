@@ -2,6 +2,8 @@ import random
 import queue
 import copy
 from collections import defaultdict
+from sklearn.feature_selection import SelectKBest, f_classif
+from sklearn.datasets import make_classification
 import numpy as np
 import pandas as pd
 from validator import Validator
@@ -119,6 +121,26 @@ class FeatureSearch:
                 best_node = node
 
         print(f"\nFinished search!!! The best feature set is {best_node.state} with an accuracy of {round(best_node.accuracy * 100, 2)}%")
+    def univariate_feature_selection(self, num_features_to_select=5):
+        print("Beginning univariate feature selection search\n")
+
+        # Separate features and target
+        X = self.data.iloc[:, :-1]  # Assuming last column is the target
+        y = self.data.iloc[:, -1]
+
+        # Perform univariate feature selection
+        selector = SelectKBest(score_func=f_classif, k=num_features_to_select)
+        selector.fit(X, y)
+        selected_indices = selector.get_support(indices=True)
+
+        # Create a node with the selected features
+        selected_features_set = set(selected_indices + 1)  # Adjusting indices to match the 1-based indexing
+        node = Node(state=selected_features_set, parent=None, accuracy=0)
+        node.evaluate(self.data, self.k)
+
+        print(f"Selected feature(s) {node.state} with an accuracy of {round(node.accuracy * 100, 2)}%\n")
+
+        return node.state
 
 def read_file(filename):
     try:

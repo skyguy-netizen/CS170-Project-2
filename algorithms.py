@@ -56,7 +56,7 @@ class FeatureSearch:
         currnode = root
         goalstate = {i for i in range(1, self.total_features + 1)}
 
-        print(f"Using no features and \"random\" evaluation, I get an accuracy of {round(root.accuracy * 100, 2)}%\n")
+        print(f"Using no features and leave-one-out evaluation, I get an accuracy of {round(root.accuracy * 100, 2)}%\n")
         print("Beginning search\n")
         while currnode.state != goalstate:
             children = self.expand_node_fs(currnode)
@@ -79,7 +79,7 @@ class FeatureSearch:
         root.evaluate(self.data)
         best_node = root
         currnode = root
-        print(f"Using all features and feature set {root.state} and \"random\" evaluation, I get an accuracy of {round(root.accuracy * 100, 2)}%\n")
+        print(f"Using all features and feature set {root.state} and leave-one-out evaluation, I get an accuracy of {round(root.accuracy * 100, 2)}%\n")
         print("Beginning search\n")
         while currnode.state != set({}):
             children = self.expand_node_be(currnode)

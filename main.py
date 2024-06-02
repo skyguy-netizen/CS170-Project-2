@@ -1,5 +1,5 @@
 import pandas as pd
-from algorithms import read_file, forward_selection, backward_elimination
+from algorithms import read_file, FeatureSearch
 from validator import Validator
 import time
 
@@ -17,12 +17,14 @@ def main():
         print("2. Backward Elimination")
         print("3. k-Best Features")
         choice = int(input())
+        data = read_file(filename)
+        search_object = FeatureSearch(data)
         if choice == 1:
-            print("Will run forward selection here")
-            # best = forward_selection(num_ftrs, data)
+            print("Running forward selection here")
+            best = search_object.forward_selection()
         elif choice == 2:
-            print("Will run backward elimination here")
-            # best = backward_elimination(num_ftrs, data)
+            print("Running backward elimination here")
+            best = search_object.backward_elimination()
         else:
             print("Method not implemented yet!")
     else:

@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-class NN:
+class KNN:
     def __init__(self, raw_data):
         self.raw_data = raw_data
 
@@ -18,14 +18,12 @@ class NN:
         return (norm_data, data_mean, data_std)
 
     # Returns class of closest point
-    def test(self, point):
+    def test(self, point, k = 1):
         # Normalize point
         norm_point = (point - self.mean) / self.std
-        min_class = None
-        min_distance = float('inf')
-        distances = np.argmin(self.distances(norm_point))
-        class_label = self.data.iloc[distances]['class']
-        return class_label
+        kmin_distances = np.argsort(self.distances(norm_point))[:k]
+        class_label = self.data.iloc[kmin_distances]['class']
+        return np.argmax(np.bincount(class_label))
 
     # Euclidean distance
     def distances(self, point):

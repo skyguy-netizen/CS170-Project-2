@@ -1,5 +1,5 @@
 import numpy as np
-from classifier import NN 
+from classifier import KNN 
 
 class Validator:
     def __init__(self, data):
@@ -12,9 +12,9 @@ class Validator:
         for i in range(total_instances):
             training_data = self.data.drop(i)
             test_instance = self.data.iloc[i]
-            classifier = NN(training_data)
+            classifier = KNN(training_data)
             classifier.train()
-            predicted_class = classifier.test(test_instance.drop('class'))
+            predicted_class = classifier.test(test_instance.drop('class'), k = 5)
             actual_class = test_instance['class']
 
             if predicted_class == actual_class:

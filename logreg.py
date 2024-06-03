@@ -19,7 +19,7 @@ class LogReg:
         X = self.X 
         Y = self.Y   
         m,n = X.shape
-        tc = 0.1
+        tc = 0.0001
         eta = 1e-5
         w = np.zeros(n)
         prev_loss = float('inf')
@@ -40,13 +40,7 @@ class LogReg:
         pred_p = self.sigmoid(x @ self.w)
         pred = np.where(pred_p > threshold_p, 2, 1)
         return pred
-        
 
-
-# data = read_file('CS170_Spring_2024_Small_data__1.txt')
-# test = data.iloc[5]
-# model = LogReg(data.drop(5))
-# model.train()
-# p = model.test(test.drop('class'))
-# print(p)
-# print(test['class'])
+    def accuracy(self, X, Y):
+        preds_y = self.test(X)
+        return (preds_y != Y).mean()

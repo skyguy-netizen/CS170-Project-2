@@ -29,7 +29,8 @@ def main():
             print("Running backward elimination here")
             best = search_object.backward_elimination()
         else:
-            print("Method not implemented yet!")
+            print("Searching for n best features")
+            best = search_object.n_best_features()
     else:
         ftrs_input =  input("Please enter feature numbers seperated by space: ")
         print(ftrs_input)

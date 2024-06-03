@@ -72,6 +72,7 @@ class FeatureSearch:
             else:
                 print("Warning: Accuracy has decreased, still continuing search\n")
         print(f"Finished search!!! The best feature set is {best_node.state} with an accuracy of {round(best_node.accuracy * 100, 2)}%")
+        return best_node
 
     def backward_elimination(self,):
         startstate = {i for i in range(1, self.total_features + 1)}
@@ -95,6 +96,36 @@ class FeatureSearch:
             else:
                 print("Warning: Accuracy has decreased, still continuing search\n")
         print(f"Finished search!!! The best feature set is {best_node.state} with an accuracy of {round(best_node.accuracy * 100, 2)}%")
+        return best_node
+
+    def n_best_features(self):
+        feature_accuracies = []
+        for feature in range(1, self.total_features + 1):
+            node = Node(state = {feature}, parent = None, accuracy = 0)
+            node.evaluate(self.data, self.k)
+            feature_accuracies.append((feature, node.accuracy))
+
+        # Sort features by accuracy in descending order
+        feature_accuracies.sort(key = lambda x: x[1], reverse = True)
+
+        root = Node(state = {}, parent = None, accuracy = 0)
+        root.evaluate(self.data)
+        gl_best_node = root
+        print(f"Default rate with accuracy: {round(gl_best_node.accuracy * 100, 2)}%")
+
+        # Select the top k features
+        for i in range(len(feature_accuracies)):
+            best_features = set([feature for feature, accuracy in feature_accuracies[:i]])
+
+            # Evaluate the k best features as a set
+            best_node = Node(state = best_features, parent = None, accuracy = 0)
+            best_node.evaluate(self.data, self.k)
+            print(f"Selected top {i} features: {best_features} with accuracy: {round(best_node.accuracy * 100, 2)}%")
+            if best_node.accuracy > gl_best_node.accuracy:
+                gl_best_node = best_node
+
+        print(f"Best feature set is {gl_best_node.state} with accuracy: {round(gl_best_node.accuracy * 100, 2)}%")
+        return gl_best_node
 
 def read_file(filename):
     try:

@@ -95,7 +95,24 @@ class FeatureSearch:
             else:
                 print("Warning: Accuracy has decreased, still continuing search\n")
         print(f"Finished search!!! The best feature set is {best_node.state} with an accuracy of {round(best_node.accuracy * 100, 2)}%")
+    def k_best_features(self, k):
+        feature_accuracies = []
+        for feature in range(1, self.total_features + 1):
+            node = Node(state = {feature}, parent = None, accuracy = 0)
+            node.evaluate(self.data, self.k)
+            feature_accuracies.append((feature, node.accuracy))
 
+        # Sort features by accuracy in descending order
+        feature_accuracies.sort(key=lambda x: x[1], reverse=True)
+
+        # Select the top k features
+        best_features = set([feature for feature, accuracy in feature_accuracies[:k]])
+
+        # Evaluate the k best features as a set
+        best_node = Node(state = best_features, parent = None, accuracy = 0)
+        best_node.evaluate(self.data, self.k)
+
+        print(f"Selected top {k} features: {best_features} with accuracy: {round(best_node.accuracy * 100, 2)}%")
 def read_file(filename):
     try:
         file = open(filename, "r")

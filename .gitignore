@@ -1,4 +1,6 @@
 project2part2.zip
 __pycache__/*
-*.zip
-__pycache__/classifier.cpython-312.pyc              
+*.zip  
+.ipynb_checkpoints/*          
+*.png
+trace/*

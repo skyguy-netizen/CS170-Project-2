@@ -1,0 +1,21 @@
+Welcome to our groups Feature Selection plus Nearest Neighbor model.
+Please enter name of file: CS170_Spring_2024_Small_data__1.txt
+Would you like to use a feature selection algorithm or use your subset of features? (yes or no): yes
+Enter value for k (nearest-neighbors): 1
+Type the number of the feature selection algorithm you want to run:
+1. Forward Selection
+2. Backward Elimination
+3. k-Best Features
+Searching for n best features
+Default rate with accuracy: 86.0%
+Selected top 0 features: set() with accuracy: 86.0%
+Selected top 1 features: {7} with accuracy: 90.0%
+Selected top 2 features: {1, 7} with accuracy: 79.0%
+Selected top 3 features: {8, 1, 7} with accuracy: 82.0%
+Selected top 4 features: {8, 1, 2, 7} with accuracy: 85.0%
+Selected top 5 features: {1, 2, 7, 8, 10} with accuracy: 83.0%
+Selected top 6 features: {1, 2, 5, 7, 8, 10} with accuracy: 82.0%
+Selected top 7 features: {1, 2, 4, 5, 7, 8, 10} with accuracy: 86.0%
+Selected top 8 features: {1, 2, 4, 5, 7, 8, 9, 10} with accuracy: 86.0%
+Selected top 9 features: {1, 2, 3, 4, 5, 7, 8, 9, 10} with accuracy: 81.0%
+Best feature set is {7} with accuracy: 90.0%

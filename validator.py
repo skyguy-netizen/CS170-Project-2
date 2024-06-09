@@ -1,6 +1,6 @@
 import numpy as np
 from classifier import KNN 
-from logreg import LogReg
+# from logreg import LogReg
 
 class Validator:
     def __init__(self, data, k = 1):
@@ -30,15 +30,15 @@ class Validator:
         accuracy = prediction/total_instances
         return accuracy
 
-    def test_logreg(self):
-        prediction = 0
-        total_instances = len(self.data)
-        split = int(0.7 * total_instances)
-        train_data = self.data[:split]
-        test_data = self.data[split:]
-        model = LogReg(train_data)
-        model.train()
-        xtest = test_data.drop(columns = 'class')
-        ytest = test_data['class']
-        accuracy = model.accuracy(xtest, ytest)
-        return accuracy
+    # def test_logreg(self):
+    #     prediction = 0
+    #     total_instances = len(self.data)
+    #     split = int(0.7 * total_instances)
+    #     train_data = self.data[:split]
+    #     test_data = self.data[split:]
+    #     model = LogReg(train_data)
+    #     model.train()
+    #     xtest = test_data.drop(columns = 'class')
+    #     ytest = test_data['class']
+    #     accuracy = model.accuracy(xtest, ytest)
+    #     return accuracy

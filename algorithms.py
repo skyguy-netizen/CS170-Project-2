@@ -87,7 +87,7 @@ class FeatureSearch:
             curr_best_node = children[0]
             for child in children:
                 print(f"\tUsing feature(s) {child.state} accuracy is {round(child.accuracy * 100, 2)}%")
-                if child.accuracy > curr_best_node.accuracy:
+                if child.accuracy >= curr_best_node.accuracy:
                     curr_best_node = child
             currnode = curr_best_node
             print(f"\nFeature set {currnode.state} was best, accuracy is {round(currnode.accuracy * 100, 2)}%\n")

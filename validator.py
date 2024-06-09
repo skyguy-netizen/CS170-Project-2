@@ -11,6 +11,11 @@ class Validator:
         prediction = 0
         total_instances = len(self.data)
 
+        if self.data.shape[1] == 1 and 'class' in self.data.columns:
+            classes, counts = np.unique(self.data['class'], return_counts=True)
+            def_rate = np.max(counts)/total_instances
+            return def_rate
+
         for i in range(total_instances):
             training_data = self.data.drop(i)
             test_instance = self.data.iloc[i]
